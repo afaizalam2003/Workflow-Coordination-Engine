@@ -1,8 +1,7 @@
 import { CheckCircle2, XCircle, Clock, RotateCw, FileText, Database, Server, AlertCircle } from "lucide-react";
 import { formatDistanceToNow, format } from "date-fns";
 import { AutoRefresh } from "../../../components/AutoRefresh";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+import { API_URL } from "../../../lib/config";
 
 export default async function WorkflowDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

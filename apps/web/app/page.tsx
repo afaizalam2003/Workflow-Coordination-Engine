@@ -1,7 +1,7 @@
 import { Activity, AlertCircle, CheckCircle2, RefreshCw, Zap, Clock } from "lucide-react";
 import Link from "next/link";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+import { API_URL } from "../lib/config";
 
 async function getOverview() {
   try {

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Send, CheckCircle2, AlertCircle, Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { API_URL } from "../../../lib/config";
 
 type FormState = "idle" | "loading" | "success" | "error";
 
@@ -38,7 +39,7 @@ export default function NewDocumentPipelinePage() {
         headers["Idempotency-Key"] = form.idempotency_key;
       }
 
-      const res = await fetch("http://localhost:8000/document-intelligence", {
+      const res = await fetch(`${API_URL}/document-intelligence`, {
         method: "POST",
         headers,
         body: JSON.stringify({
@@ -58,7 +59,7 @@ export default function NewDocumentPipelinePage() {
         setState("error");
       }
     } catch (err) {
-      setErrorMsg("Cannot connect to backend. Make sure uvicorn is running on port 8000.");
+      setErrorMsg(`Cannot connect to backend at ${API_URL}. Check NEXT_PUBLIC_API_URL or ensure the API is running.`);
       setState("error");
     }
   };
@@ -197,7 +198,7 @@ export default function NewDocumentPipelinePage() {
 
           <div className="flex items-center p-3 bg-background border border-border rounded-md text-xs text-textMuted space-x-2">
             <div className="w-2 h-2 rounded-full bg-success animate-ping" />
-            <span>Submits to <span className="font-mono text-primary">POST http://localhost:8000/document-intelligence</span></span>
+            <span>Submits to <span className="font-mono text-primary">POST {API_URL}/document-intelligence</span></span>
           </div>
 
           <button

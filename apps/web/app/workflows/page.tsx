@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Filter, Search, CheckCircle2, XCircle, RefreshCw, Clock } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { API_URL } from "../../lib/config";
 
 function StatusBadge({ status }: { status: string }) {
   switch (status) {
@@ -17,7 +18,7 @@ function StatusBadge({ status }: { status: string }) {
   }
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
 
 export default async function WorkflowsPage() {
   let workflows = [];

@@ -46,7 +46,7 @@ export default async function DashboardPage() {
   const [overview, workflows] = await Promise.all([getOverview(), getWorkflows()]);
 
   const byStatus = overview?.workflows_by_status || {};
-  const total = Object.values(byStatus).reduce((a: any, b: any) => a + b, 0);
+  const total = (Object.values(byStatus) as number[]).reduce((a, b) => a + b, 0);
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
@@ -109,7 +109,7 @@ export default async function DashboardPage() {
               {Object.entries(byStatus).length === 0 ? (
                 <p className="text-textMuted text-sm">No data yet</p>
               ) : (
-                Object.entries(byStatus).map(([status, count]: any) => (
+                Object.entries(byStatus as Record<string, number>).map(([status, count]) => (
                   <div key={status}>
                     <div className="flex justify-between text-sm mb-1">
                       <span className={`font-mono ${STATUS_COLOR[status] || "text-textMuted"}`}>{status}</span>

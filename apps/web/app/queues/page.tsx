@@ -21,7 +21,7 @@ export default async function QueuesPage() {
 
   const celeryDepth = queueData?.celery_default ?? 0;
   const totalWorkflows = overview
-    ? Object.values(overview.workflows_by_status || {}).reduce((a: any, b: any) => a + b, 0)
+    ? (Object.values(overview.workflows_by_status || {}) as number[]).reduce((a, b) => a + b, 0)
     : 0;
 
   const queues = [

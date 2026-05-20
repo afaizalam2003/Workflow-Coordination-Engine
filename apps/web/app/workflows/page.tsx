@@ -17,10 +17,12 @@ function StatusBadge({ status }: { status: string }) {
   }
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
 export default async function WorkflowsPage() {
   let workflows = [];
   try {
-    const res = await fetch("http://127.0.0.1:8000/workflows", { cache: "no-store" });
+    const res = await fetch(`${API_URL}/workflows`, { cache: "no-store" });
     if (res.ok) {
       workflows = await res.json();
     }

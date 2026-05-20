@@ -2,9 +2,11 @@ import { History, Search, Filter } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
 async function getAuditLogs() {
   try {
-    const res = await fetch("http://127.0.0.1:8000/observability/audit?limit=100", { cache: "no-store" });
+    const res = await fetch(`${API_URL}/observability/audit?limit=100`, { cache: "no-store" });
     if (res.ok) return res.json();
   } catch {}
   return [];

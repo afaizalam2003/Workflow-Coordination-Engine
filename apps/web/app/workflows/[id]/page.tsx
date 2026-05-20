@@ -2,6 +2,8 @@ import { CheckCircle2, XCircle, Clock, RotateCw, FileText, Database, Server, Ale
 import { formatDistanceToNow, format } from "date-fns";
 import { AutoRefresh } from "../../../components/AutoRefresh";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
 export default async function WorkflowDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
@@ -9,7 +11,7 @@ export default async function WorkflowDetailPage({ params }: { params: Promise<{
   let error = false;
 
   try {
-    const res = await fetch(`http://127.0.0.1:8000/workflows/${id}`, { cache: "no-store" });
+    const res = await fetch(`${API_URL}/workflows/${id}`, { cache: "no-store" });
     if (res.ok) {
       workflow = await res.json();
     } else {

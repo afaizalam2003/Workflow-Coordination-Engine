@@ -1,8 +1,10 @@
 import { Layers, Activity, Server } from "lucide-react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
 async function getQueueData() {
   try {
-    const res = await fetch("http://127.0.0.1:8000/observability/queues", { cache: "no-store" });
+    const res = await fetch(`${API_URL}/observability/queues`, { cache: "no-store" });
     if (res.ok) return res.json();
   } catch {}
   return null;
@@ -10,7 +12,7 @@ async function getQueueData() {
 
 async function getOverview() {
   try {
-    const res = await fetch("http://127.0.0.1:8000/observability/overview", { cache: "no-store" });
+    const res = await fetch(`${API_URL}/observability/overview`, { cache: "no-store" });
     if (res.ok) return res.json();
   } catch {}
   return null;

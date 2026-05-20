@@ -2,9 +2,11 @@ import { AlertOctagon, RotateCw, ShieldAlert } from "lucide-react";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
 async function getFailures() {
   try {
-    const res = await fetch("http://127.0.0.1:8000/observability/failures", { cache: "no-store" });
+    const res = await fetch(`${API_URL}/observability/failures`, { cache: "no-store" });
     if (res.ok) return res.json();
   } catch {}
   return { dead_letter: [], active_retries: [] };

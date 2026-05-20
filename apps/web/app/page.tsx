@@ -1,9 +1,11 @@
 import { Activity, AlertCircle, CheckCircle2, RefreshCw, Zap, Clock } from "lucide-react";
 import Link from "next/link";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+
 async function getOverview() {
   try {
-    const res = await fetch("http://127.0.0.1:8000/observability/overview", { cache: "no-store" });
+    const res = await fetch(`${API_URL}/observability/overview`, { cache: "no-store" });
     if (res.ok) return res.json();
   } catch {}
   return null;
@@ -11,7 +13,7 @@ async function getOverview() {
 
 async function getWorkflows() {
   try {
-    const res = await fetch("http://127.0.0.1:8000/workflows?limit=10", { cache: "no-store" });
+    const res = await fetch(`${API_URL}/workflows?limit=10`, { cache: "no-store" });
     if (res.ok) return res.json();
   } catch {}
   return [];

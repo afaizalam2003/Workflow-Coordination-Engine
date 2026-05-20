@@ -1,0 +1,53 @@
+services:
+  # ── FastAPI Web Service ─────────────────────────────────────────
+  - type: web
+    name: wce-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        sync: false          # set manually in Render dashboard
+      - key: REDIS_URL
+        sync: false
+      - key: CELERY_BROKER_URL
+        sync: false
+      - key: CELERY_RESULT_BACKEND
+        sync: false
+      - key: LOG_LEVEL
+        value: INFO
+      - key: BOOKING_MAX_RETRIES
+        value: "5"
+      - key: BOOKING_RETRY_BACKOFF_BASE_SECONDS
+        value: "30"
+      - key: SIMULATE_EXTERNAL_FAILURE
+        value: "0"
+      - key: PORT
+        value: "8000"
+
+  # ── Celery Worker (Background Worker) ──────────────────────────
+  - type: worker
+    name: wce-worker
+    runtime: docker
+    dockerfilePath: ./Dockerfile.worker
+    dockerContext: .
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: CELERY_BROKER_URL
+        sync: false
+      - key: CELERY_RESULT_BACKEND
+        sync: false
+      - key: LOG_LEVEL
+        value: INFO
+      - key: BOOKING_MAX_RETRIES
+        value: "5"
+      - key: BOOKING_RETRY_BACKOFF_BASE_SECONDS
+        value: "30"
+      - key: SIMULATE_EXTERNAL_FAILURE
+        value: "0"

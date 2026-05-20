@@ -1,0 +1,42 @@
+# ── Python ───────────────────────────────────────────────
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+dist/
+build/
+*.sqlite3
+htmlcov/
+coverage/
+.coverage
+*.log
+
+# ── Node / Next.js ───────────────────────────────────────
+node_modules/
+.next/
+out/
+.vercel/
+.turbo/
+*.tsbuildinfo
+
+# ── Docker ───────────────────────────────────────────────
+*.env.local
+
+# ── OS ───────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ──────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+.cursor/

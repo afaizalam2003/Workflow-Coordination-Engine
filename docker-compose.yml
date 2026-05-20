@@ -1,0 +1,75 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: wce
+      POSTGRES_PASSWORD: wce
+      POSTGRES_DB: wce
+    ports:
+      - "5432:5432"
+    volumes:
+      - wce_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wce -d wce"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg://wce:wce@postgres:5432/wce
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+      LOG_LEVEL: INFO
+      WORKFLOW_MAX_RETRIES: "5"
+      WORKFLOW_RETRY_BACKOFF_BASE_SECONDS: "15"
+      SIMULATE_EXTERNAL_FAILURE: "0"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/Dockerfile
+    command:
+      [
+        "sh",
+        "-c",
+        "alembic upgrade head && celery -A apps.api.celery_app worker -l info",
+      ]
+    environment:
+      DATABASE_URL: postgresql+psycopg://wce:wce@postgres:5432/wce
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+      LOG_LEVEL: INFO
+      WORKFLOW_MAX_RETRIES: "5"
+      WORKFLOW_RETRY_BACKOFF_BASE_SECONDS: "15"
+      SIMULATE_EXTERNAL_FAILURE: "0"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  wce_pg:
